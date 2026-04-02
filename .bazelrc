@@ -50,6 +50,10 @@ common --grpc_keepalive_time=30s
 # memory in exchange for higher download concurrency.
 common --jobs=30
 
+# Write gRPC and execution logs so BuildBuddy / `bb print` can inspect them.
+build:logging --remote_grpc_log=grpc.log
+build:logging --execution_log_compact_file=execution.log
+
 common:remote --extra_execution_platforms=//:rbe
 common:remote --remote_executor=grpcs://remote.buildbuddy.io
 common:remote --jobs=800
@@ -58,6 +62,7 @@ common:remote --jobs=800
 #common:remote --@rules_rust//rust/settings:pipelined_compilation
 
 # GitHub Actions CI configs.
+common:ci --config=logging
 common:ci --remote_download_minimal
 common:ci --keep_going
 common:ci --verbose_failures
